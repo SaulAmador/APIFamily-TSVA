@@ -28,7 +28,7 @@ def get_members():
     members = jackson_family.get_all_members()
     return jsonify(members), 200
 
-@app.route('/member/<int:member_id>', methods=['GET'])
+@app.route('/members/<int:member_id>', methods=['GET'])
 def get_single_member(member_id):
     
     member = jackson_family.get_member(member_id)
@@ -36,7 +36,7 @@ def get_single_member(member_id):
         raise APIException('Member not found', status_code=404)
     return jsonify(member), 200
 
-@app.route('/member', methods=['POST'])
+@app.route('/members', methods=['POST'])
 def add_member():
     
     request_body = request.get_json()
@@ -45,10 +45,10 @@ def add_member():
     if not request_body or 'first_name' not in request_body or 'age' not in request_body:
         raise APIException('First name and age are required', status_code=400)
     
-    jackson_family.add_member(request_body)
-    return jsonify({"message": "Member added successfully"}), 201
+    new_member = jackson_family.add_member(request_body)
+    return jsonify(new_member), 200
 
-@app.route('/member/<int:member_id>', methods=['DELETE'])
+@app.route('/members/<int:member_id>', methods=['DELETE'])
 def delete_member(member_id):
     
     member = jackson_family.delete_member(member_id)
